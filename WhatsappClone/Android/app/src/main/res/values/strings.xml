@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">WhatsappClone</string>
+
+    <string name="login_description_whatsappLogo">Whatsapp Logo</string>
+    <string name="login_text_welcome">Welcome to a Whatsapp Clone</string>
+    <string name="login_hint_name">Name</string>
+    <string name="login_hint_countryCode">Country Code</string>
+    <string name="login_hint_phoneNumber">Area Code + Phone Nº</string>
+
+    <string name="validation_text_minorTitle">Validation</string>
+    <string name="validation_text_guideMessage">You received a SMS to validate your phone number, insert the received code below</string>
+    <string name="validation_button_validate">Validation Code</string>
+    <string name="login_button_signUp">Sign Up</string>
+</resources>

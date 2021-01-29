@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TitleStyle">
+        <item name="android:textSize">@dimen/TitleStyle_textSize</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MinorTitleStyle" parent="TitleStyle">
+        <item name="android:textSize">@dimen/MinorTitleStyle_textSize</item>
+    </style>
+
+    <style name="TextButtonOnPrimary" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="backgroundTint">@color/onPrimary</item>
+    </style>
+
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="login_horizontalPadding" type="dimen">24dp</item>
+    <item name="login_header_verticalMargin" type="dimen">24dp</item>
+    <item name="login_logo_verticalMargin" type="dimen">12dp</item>
+
+    <item name="validation_horizontalPadding" type="dimen">24dp</item>
+    <item name="validation_header_verticalMargin" type="dimen">24dp</item>
+    <item name="validation_logo_verticalMargin" type="dimen">12dp</item>
+
+    <item name="TitleStyle_textSize" type="dimen">36sp</item>
+
+    <item name="MinorTitleStyle_textSize" type="dimen">20sp</item>
+
+
+</resources>
