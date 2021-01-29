@@ -7,6 +7,7 @@
     android:background="@color/primary"
     android:orientation="vertical"
     android:paddingHorizontal="@dimen/login_horizontalPadding"
+    android:id="@+id/main_view"
     tools:context=".activities.LoginActivity">
 
     <LinearLayout
