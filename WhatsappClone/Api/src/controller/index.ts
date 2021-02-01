@@ -1,5 +1,9 @@
 import { UserController } from "./UserController";
 
-export const controllers = [
+export const restControllers = [
     UserController
+];
+
+export const socketControllers = [
+
 ];

@@ -3,9 +3,10 @@ import { createExpressServer, useContainer as useContainerRoutingControllers } f
 import { Connection, useContainer as useContainerTypeorm } from 'typeorm';
 import { Container } from 'typedi';
 
-import { controllers } from './controller';
+import { restControllers } from './controller';
+import { createSocketServer } from 'socket-controllers';
 
-export class ExpressApplication {
+export class Application {
 
     private readonly BASE_ROUTE_PREFIX = '/api';
 
@@ -14,8 +15,12 @@ export class ExpressApplication {
     constructor(private port: number, private connection?: Connection) {
         this.app = createExpressServer({
             routePrefix: this.BASE_ROUTE_PREFIX,
-            controllers
+            controllers: restControllers
         });
+
+        createSocketServer(port + 1, {
+
+        })
     }
 
     public run(): Promise<void> {

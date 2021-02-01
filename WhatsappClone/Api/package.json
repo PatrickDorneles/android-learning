@@ -13,6 +13,7 @@
       "pg": "^8.5.1",
       "reflect-metadata": "^0.1.10",
       "routing-controllers": "^0.9.0-alpha.6",
+      "socket-controllers": "^0.0.5",
       "typedi": "^0.10.0",
       "typeorm": "^0.2.30",
       "typeorm-typedi-extensions": "^0.4.0",

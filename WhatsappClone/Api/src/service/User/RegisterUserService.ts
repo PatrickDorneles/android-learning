@@ -20,8 +20,10 @@ export class RegisterUserService {
                 phoneNumber: registerDTO.phoneNumber,
             });
 
-
+            user = this.userRepository.create(userToRegister);   
         }
+
+        
 
     }
 
