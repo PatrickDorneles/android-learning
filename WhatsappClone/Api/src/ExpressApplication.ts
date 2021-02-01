@@ -26,11 +26,5 @@ export class ExpressApplication {
         });
     }
 
-    public getPort() {
-        return this.port;
-    }
-
-    
-
 }
 

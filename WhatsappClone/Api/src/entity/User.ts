@@ -1,10 +1,10 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, PrimaryColumn} from "typeorm";
 import { uuid } from "uuidv4";
 
 @Entity()
 export class User {
 
-    @Column()
+    @PrimaryColumn()
     id: string;
 
     @Column()

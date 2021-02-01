@@ -1,20 +1,18 @@
 import { BadRequestError, UnauthorizedError } from "routing-controllers";
 import { Inject, Service } from "typedi";
+import { InjectRepository } from "typeorm-typedi-extensions";
 import { UserRegisterRequestDTO } from "../../dto/UserRegisterRequestDTO";
 import { User } from "../../entity/User";
-import { FindUserByPhoneNumberService } from "./FindUserByPhoneNumberService";
+import { UserRepository } from "../../repository/UserRepository";
 
 @Service()
 export class RegisterUserService {
 
-    @Inject()
-    
-
-    @Inject()
-    private readonly findUserByPhoneNumberService: FindUserByPhoneNumberService;
+    @InjectRepository()
+    private readonly userRepository: UserRepository;
 
     public async registerUser(registerDTO: UserRegisterRequestDTO)  {
-        let user = await this.findUserByPhoneNumberService.findUserByPhone(registerDTO.phoneNumber);
+        let user = await this.userRepository.findOneByPhone(registerDTO.phoneNumber);
 
         if(!user) {
             const userToRegister = new User({
