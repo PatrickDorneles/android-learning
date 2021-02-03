@@ -9,6 +9,10 @@
 
     <string name="validation_text_minorTitle">Validation</string>
     <string name="validation_text_guideMessage">You received a SMS to validate your phone number, insert the received code below</string>
-    <string name="validation_button_validate">Validation Code</string>
+    <string name="validation_button_validate">Validate Code</string>
+    <string name="login_button_register">Register</string>
+    <string name="login_button_signIn">Sign In</string>
     <string name="login_button_signUp">Sign Up</string>
+    <string name="login_hint_email">Email</string>
+    <string name="login_hint_password">Password</string>
 </resources>

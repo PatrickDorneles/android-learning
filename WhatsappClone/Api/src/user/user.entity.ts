@@ -1,5 +1,4 @@
 import {Entity, PrimaryGeneratedColumn, Column, PrimaryColumn} from "typeorm";
-import { uuid } from "uuidv4";
 
 @Entity()
 export class User {
@@ -9,6 +8,12 @@ export class User {
 
     @Column()
     name: string;
+
+    @Column()
+    email: string;
+
+    @Column()
+    password: string;
 
     @Column()
     phoneNumber: string;

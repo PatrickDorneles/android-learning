@@ -1,10 +1,10 @@
-import { Service } from "typedi";
+import { Injectable } from "@nestjs/common";
 
 const MIN_TOKEN_NUMBER = 1;
 const TOKEN_CEILING_BASE = 10;
 const CEILING_TO_MAX_DIFFERENCE = 1;
 
-@Service()
+@Injectable()
 export class ValidationTokenFactory {    
 
     public createToken(tokenSize: number) {

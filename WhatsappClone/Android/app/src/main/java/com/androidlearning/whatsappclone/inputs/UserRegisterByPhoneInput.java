@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Builder
-public class UserRegisterInput {
+public class UserRegisterByPhoneInput {
     String name;
     String phoneNumber;
 }

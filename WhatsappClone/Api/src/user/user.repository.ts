@@ -1,8 +1,8 @@
-import { Service } from "typedi";
-import { EntityRepository, Repository } from "typeorm";
-import { User } from "../entity/User";
 
-@Service()
+import { Injectable } from "@nestjs/common";
+import { EntityRepository, Repository } from "typeorm";
+import { User } from "./user.entity";
+
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
     public async findOneByPhone(phoneNumber: string) {
@@ -11,5 +11,9 @@ export class UserRepository extends Repository<User> {
 
     public async findOneById(id: string) {
         return await this.findOne(id);
+    }
+
+    public async findOneByEmail(email: string) {
+        return await this.findOne(undefined, { where: { email }});
     }
 }

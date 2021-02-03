@@ -114,6 +114,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:orientation="vertical"
         >
         <Button
             android:id="@+id/sign_up_button"
@@ -122,6 +123,18 @@
             android:text="@string/login_button_signUp"
             android:textSize="16sp"
             style="@style/TextButtonOnPrimary"
+            android:layout_marginBottom="8dp"
+            />
+
+        <TextView
+            android:id="@+id/to_login_email_pass_link"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/onPrimary"
+            android:text="Want to login or sign up using your email? Tap here!"
+            android:layout_marginVertical="8dp"
+            android:textSize="16sp"
             />
     </LinearLayout>
 

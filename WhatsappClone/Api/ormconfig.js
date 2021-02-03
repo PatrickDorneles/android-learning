@@ -1,26 +1,24 @@
-export default {
+module.exports = {
     type: "postgres",
     host: "localhost",
     port: 5432,
     username: "postgres",
-    password: "pass",
+    password: "root",
     database: "whatsapp_clone",
     synchronize: true,
     entities: [
-        "src/entity/*.ts"
+        "dist/**/*.entity{.ts,.js}"
     ],
     subscribers: [
-        "src/subscriber/*.ts"
+        "dist/**/*.subscriber{.ts,.js}"
     ],
     entitySchemas: [
-        "src/schema/*.json"
+        "dist/**/*.schema.json"
     ],
     migrations: [
-        "src/migration/*.ts"
+        "dist/src/migrations/*{.ts,.js}"
     ],
     cli: {
-        entitiesDir: "src/entities",
-        migrationsDir: "src/migrations",
-        subscribersDir: "src/subscribers"
+        migrationsDir: "src/migrations"
     }
 }
