@@ -104,7 +104,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textColor="@color/onPrimary"
-            android:text="Doesn't have an account? Sign Up"
+            android:text="@string/login_link_toSignUp"
             android:layout_marginVertical="8dp"
             android:textSize="16sp"
             />
@@ -115,7 +115,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textColor="@color/onPrimary"
-            android:text="Want to register by your phone number? Tap here!"
+            android:text="@string/login_link_toPhoneLogin"
             android:layout_marginVertical="8dp"
             android:textSize="16sp"
             />

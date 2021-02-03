@@ -15,4 +15,7 @@
     <string name="login_button_signUp">Sign Up</string>
     <string name="login_hint_email">Email</string>
     <string name="login_hint_password">Password</string>
+    <string name="login_link_toSignUp">Doesn\'t have an account? Sign Up</string>
+    <string name="login_link_toPhoneLogin">Want to register by your phone number? Tap here!</string>
+    <string name="login_link_toEmailLogin">Want to login or sign up using your email? Tap here!</string>
 </resources>

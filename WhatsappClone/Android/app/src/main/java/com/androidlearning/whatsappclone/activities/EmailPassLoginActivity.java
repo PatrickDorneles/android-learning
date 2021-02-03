@@ -34,6 +34,5 @@ public class EmailPassLoginActivity extends AppCompatActivity {
     protected void onClickToSignUp() {
         val intent = SignUpActivity_.intent(this).get();
         startActivity(intent);
-        finish();
     }
 }

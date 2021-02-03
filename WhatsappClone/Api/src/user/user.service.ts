@@ -5,6 +5,7 @@ import { ValidationTokenFactory } from './factories/validation-token.factory';
 import { UserRegisterByPhoneInput } from './inputs/user-register.input';
 import { UserSignUpByEmailInput } from './inputs/user-sign-up-email.input';
 import { UserRepository } from './user.repository';
+import { EmailAlreadyInUseError } from '@/@errors/email-already-in-use.error'
 
 const TOKEN_SIZE = 6;
 
@@ -28,17 +29,24 @@ export class UserService {
     }
 
     public async signUpByEmail(signUpInput: UserSignUpByEmailInput) {
-        const user = await this.userRepository.findOneByEmail(signUpInput.email);
+        const existentUser = await this.userRepository.findOneByEmail(signUpInput.email);
 
+        if(existentUser) {
+            throw new EmailAlreadyInUseError();
+        }
 
+        const user = this.userFactory.createUserByEmail(signUpInput);
 
+        const savedUser = this.userRepository.create(user);
+
+        return savedUser;      
     }
 
     private async findUserByPhoneOrCreate(registerInput: UserRegisterByPhoneInput) {
         const user = await this.userRepository.findOneByPhone(registerInput.phoneNumber);
 
         if(!user) {
-            const userToRegister = this.userFactory.createUser(registerInput);
+            const userToRegister = this.userFactory.createUserByPhone(registerInput);
             return this.userRepository.create(userToRegister);
         }
 

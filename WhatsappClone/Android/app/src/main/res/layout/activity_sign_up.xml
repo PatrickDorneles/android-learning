@@ -48,6 +48,22 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/login_hint_name"
+            android:layout_marginVertical="4dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:inputType="textEmailAddress"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="@string/login_hint_email"
             android:layout_marginVertical="4dp">
 
@@ -56,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:inputType="textEmailAddress"
+                android:inputType="text"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -91,36 +107,10 @@
             android:id="@+id/sign_up_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login_button_signIn"
+            android:text="@string/login_button_signUp"
             android:textSize="16sp"
             style="@style/TextButtonOnPrimary"
-            android:layout_marginBottom="8dp"
             />
-
-
-        <TextView
-            android:id="@+id/to_sign_up_link"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/onPrimary"
-            android:text="Doesn't have an account? Sign Up"
-            android:layout_marginVertical="8dp"
-            android:textSize="16sp"
-            />
-
-        <TextView
-            android:id="@+id/to_login_link"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/onPrimary"
-            android:text="Want to register by your phone number? Tap here!"
-            android:layout_marginVertical="8dp"
-            android:textSize="16sp"
-            />
-
-
     </LinearLayout>
 
 </LinearLayout>

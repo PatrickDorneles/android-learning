@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.androidlearning.whatsappclone.R;
 import com.androidlearning.whatsappclone.factories.RetrofitMainAPIFactory;
+import com.androidlearning.whatsappclone.factories.RetrofitServiceFactory;
 import com.androidlearning.whatsappclone.helpers.UserPreferences;
 import com.androidlearning.whatsappclone.inputs.UserRegisterByPhoneInput;
 import com.androidlearning.whatsappclone.models.UserModel;
@@ -54,15 +56,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        val retrofit = RetrofitMainAPIFactory.create();
-        userService = retrofit.create(UserService.class);
-
+        userService = RetrofitServiceFactory.create(UserService.class);
 
         SimpleMaskFormatter simpleMaskFormatter = new SimpleMaskFormatter("(NN) NNNNN-NNNN");
         MaskTextWatcher maskTextWatcher = new MaskTextWatcher(mPhoneNumberEdit, simpleMaskFormatter);
         mPhoneNumberEdit.addTextChangedListener(maskTextWatcher);
-
-
 
     }
 
