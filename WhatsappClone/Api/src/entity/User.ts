@@ -13,13 +13,10 @@ export class User {
     @Column()
     phoneNumber: string;
 
+    @Column({ nullable: true })
+    validationToken: string;
 
-    constructor(user: Omit<User, 'id'>, id?: string) {
-        Object.assign(this, user);
-
-        if(!id) {
-            this.id = uuid();
-        }
-    }
+    @Column({ default: false })
+    valid: boolean;
 
 }
