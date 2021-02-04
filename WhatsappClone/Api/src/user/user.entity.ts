@@ -1,4 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, PrimaryColumn } from 'typeorm';
+import { Chat } from '@/chat/chat.entity';
+import { Message } from '@/message/message.entity';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  JoinTable,
+  OneToMany,
+  ManyToMany,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -22,4 +31,11 @@ export class User {
 
   @Column({ default: false })
   valid: boolean;
+
+  @JoinTable()
+  @OneToMany((type) => Message, (message) => message.user)
+  messages: Message[];
+
+  @ManyToMany((type) => Chat, (chat) => chat.users)
+  chats: Chat[];
 }
