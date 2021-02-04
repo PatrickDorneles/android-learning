@@ -1,15 +1,13 @@
-package com.androidlearning.whatsappclone.helpers;
+package com.androidlearning.whatsappclone.helpers.preferences;
 
 import android.content.Context;
-import android.widget.Toast;
 
+import com.androidlearning.whatsappclone.helpers.GsonHelper;
 import com.androidlearning.whatsappclone.models.UserModel;
-
-import java.util.HashMap;
 
 import lombok.val;
 
-public class UserPreferences extends Preferences {
+public class UserPreferences extends BasePreferences {
 
 
     private final String USER_KEY = "user";
@@ -26,8 +24,7 @@ public class UserPreferences extends Preferences {
 
     public UserModel getUserData() {
         val jsonUser = preferences.getString(USER_KEY, "");
-
-        return GsonHelper.GSON.fromJson(jsonUser, UserModel.class);
+        return GsonHelper.fromGson(jsonUser, UserModel.class);
     }
 
 }

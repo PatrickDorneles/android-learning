@@ -46,6 +46,7 @@
         >
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/email_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/login_hint_email"
@@ -62,6 +63,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/pass_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/login_hint_password"
@@ -88,7 +90,7 @@
         android:orientation="vertical"
         >
         <Button
-            android:id="@+id/sign_up_button"
+            android:id="@+id/sign_in_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login_button_signIn"

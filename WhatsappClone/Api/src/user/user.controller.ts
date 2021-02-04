@@ -12,13 +12,13 @@ export class UserController {
     ) { }
 
     @Post("/sign-up/phone")
-    protected registerUserByPhone(@Body() registerInput: UserRegisterByPhoneInput) {
-        return this.userService.registerByPhoneNumber(registerInput);
+    protected async registerUserByPhone(@Body() registerInput: UserRegisterByPhoneInput) {
+        return await this.userService.registerByPhoneNumber(registerInput);
     }
 
     @Post("/sign-up/email")
-    protected signUpUserByEmail(@Body() signUpInput: UserSignUpByEmailInput) {
-        
+    protected async signUpUserByEmail(@Body() signUpInput: UserSignUpByEmailInput) {
+        return await this.userService.signUpByEmail(signUpInput);
     }
 
 

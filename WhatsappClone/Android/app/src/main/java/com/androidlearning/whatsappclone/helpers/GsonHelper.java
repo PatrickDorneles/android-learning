@@ -9,4 +9,11 @@ public abstract class GsonHelper {
             .setDateFormat("dd/MM/aa")
             .create();
 
+    public static <T> T fromGson(String json, Class<T> classOfT) {
+        return GSON.fromJson(json, classOfT);
+    }
+
+    public static String toGson(Object src) {
+        return GSON.toJson(src);
+    }
 }

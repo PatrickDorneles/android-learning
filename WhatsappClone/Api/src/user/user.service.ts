@@ -7,6 +7,8 @@ import { UserSignUpByEmailInput } from './inputs/user-sign-up-email.input';
 import { UserRepository } from './user.repository';
 import { EmailAlreadyInUseError } from '@/@errors/email-already-in-use.error'
 
+import { hash } from 'bcrypt';
+
 const TOKEN_SIZE = 6;
 
 @Injectable()
@@ -31,15 +33,31 @@ export class UserService {
     public async signUpByEmail(signUpInput: UserSignUpByEmailInput) {
         const existentUser = await this.userRepository.findOneByEmail(signUpInput.email);
 
+        console.log(existentUser);
+        
         if(existentUser) {
+
             throw new EmailAlreadyInUseError();
         }
 
+        console.log("here");
+        
+
         const user = this.userFactory.createUserByEmail(signUpInput);
 
-        const savedUser = this.userRepository.create(user);
+        user.password = await hash(user.password, 10);
+
+        const savedUser = await this.userRepository.save(user);
 
         return savedUser;      
+    }
+
+    public async findOneUserById(id: string) {
+        return await this.userRepository.findOneById(id);
+    }
+
+    public async findOneUserByEmail(email: string) {
+        return await this.userRepository.findOneByEmail(email);
     }
 
     private async findUserByPhoneOrCreate(registerInput: UserRegisterByPhoneInput) {

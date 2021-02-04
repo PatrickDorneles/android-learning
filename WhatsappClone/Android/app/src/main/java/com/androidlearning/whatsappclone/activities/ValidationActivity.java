@@ -5,12 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
 
 import com.androidlearning.whatsappclone.R;
-import com.androidlearning.whatsappclone.factories.RetrofitMainAPIFactory;
-import com.androidlearning.whatsappclone.helpers.UserPreferences;
+import com.androidlearning.whatsappclone.factories.RetrofitServiceFactory;
+import com.androidlearning.whatsappclone.helpers.GsonHelper;
+import com.androidlearning.whatsappclone.helpers.preferences.UserPreferences;
+import com.androidlearning.whatsappclone.models.UserModel;
 import com.androidlearning.whatsappclone.services.UserService;
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
@@ -26,8 +26,12 @@ import lombok.val;
 @SuppressLint("NonConstantResourceId")
 public class ValidationActivity extends AppCompatActivity {
 
+    public static final String USER_KEY_EXTRA = "user";
+
     @ViewById(R.id.validation_code_edit)
     protected TextInputEditText mValidationCodeEdit;
+
+    private UserModel mUser;
 
     private UserService userService;
 
@@ -36,8 +40,10 @@ public class ValidationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_validation);
 
-        val retrofit = RetrofitMainAPIFactory.create();
-        userService = retrofit.create(UserService.class);
+        val userExtra = getIntent().getStringExtra(USER_KEY_EXTRA);
+        mUser = GsonHelper.fromGson(userExtra, UserModel.class);
+
+        userService = RetrofitServiceFactory.create(UserService.class);
 
         SimpleMaskFormatter simpleMaskFormatter = new SimpleMaskFormatter("NNNNNNN");
         MaskTextWatcher maskTextWatcher = new MaskTextWatcher(mValidationCodeEdit, simpleMaskFormatter);
