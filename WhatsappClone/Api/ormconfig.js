@@ -3,7 +3,7 @@ module.exports = {
     host: "localhost",
     port: 5432,
     username: "postgres",
-    password: "root",
+    password: "pass",
     database: "whatsapp_clone",
     synchronize: true,
     entities: [

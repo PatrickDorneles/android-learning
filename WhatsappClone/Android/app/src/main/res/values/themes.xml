@@ -2,6 +2,12 @@
     <style name="MainTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
+
+        <item name="colorSecondary">@color/primary</item>
+        <item name="colorOnSecondary">@color/onPrimary</item>
+        <item name="colorOnSurface">@color/primaryDark</item>
     </style>
+
+
 
 </resources>

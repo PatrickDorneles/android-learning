@@ -15,7 +15,7 @@ import com.androidlearning.whatsappclone.helpers.ErrorBody;
 import com.androidlearning.whatsappclone.helpers.preferences.AuthTokenPreferences;
 import com.androidlearning.whatsappclone.helpers.preferences.UserPreferences;
 import com.androidlearning.whatsappclone.inputs.LoginWithEmailInput;
-import com.androidlearning.whatsappclone.models.AuthTokenDTO;
+import com.androidlearning.whatsappclone.models.AuthResponseModel;
 import com.androidlearning.whatsappclone.models.UserModel;
 import com.androidlearning.whatsappclone.services.AuthService;
 import com.google.android.material.textfield.TextInputEditText;
@@ -102,11 +102,11 @@ public class EmailPassLoginActivity extends AppCompatActivity {
     protected void signIn(LoginWithEmailInput loginInput) {
         val call = authService.loginWithEmail(loginInput);
 
-        call.enqueue(new Callback<AuthTokenDTO>() {
+        call.enqueue(new Callback<AuthResponseModel>() {
             @SneakyThrows
             @Override
             @EverythingIsNonNull
-            public void onResponse(Call<AuthTokenDTO> call, Response<AuthTokenDTO> response) {
+            public void onResponse(Call<AuthResponseModel> call, Response<AuthResponseModel> response) {
                 clearErrors();
 
                 Log.i("code", String.valueOf(response.code()));
@@ -122,7 +122,9 @@ public class EmailPassLoginActivity extends AppCompatActivity {
                 }
 
                 val token = response.body().getAuthToken();
+                val user = response.body().getUser();
 
+                userPreferences.saveUserPreferences(user);
                 authTokenPreferences.saveAuthTokenPreferences("Bearer " + token);
 
                 Toast.makeText(EmailPassLoginActivity.this, "Successfully signed in", Toast.LENGTH_SHORT).show();
@@ -130,7 +132,7 @@ public class EmailPassLoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<AuthTokenDTO> call, Throwable t) {
+            public void onFailure(Call<AuthResponseModel> call, Throwable t) {
                 Log.e("err", t.getMessage());
             }
         });

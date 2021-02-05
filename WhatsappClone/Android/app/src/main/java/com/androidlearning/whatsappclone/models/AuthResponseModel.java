@@ -3,6 +3,7 @@ package com.androidlearning.whatsappclone.models;
 import lombok.Getter;
 
 @Getter
-public class AuthTokenDTO {
+public class AuthResponseModel {
     String authToken;
+    UserModel user;
 }

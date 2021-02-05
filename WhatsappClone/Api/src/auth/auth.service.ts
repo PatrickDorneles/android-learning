@@ -1,4 +1,5 @@
 import { InvalidEmailOrPasswordError } from '@/@errors/invalid-email-or-password.error';
+import { UserResponseModel } from '@/user/models/user-response.model';
 import { User } from '@/user/user.entity';
 import { UserService } from '@/user/user.service';
 import {
@@ -12,6 +13,7 @@ import { compare } from 'bcrypt';
 import { JwtFactory } from './factories/jwt.factory';
 import { AuthWithEmailInput } from './inputs/auth-with-email.input';
 import { AuthTokenPayload } from './inputs/token-payload.input';
+import { AuthResponseModel } from './model/auth-response.model';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -47,9 +49,10 @@ export class AuthService implements OnModuleInit {
 
     const authToken = await this.jwtFactory.generateJwt(user);
 
-    return {
+    return new AuthResponseModel(
       authToken,
-    };
+      UserResponseModel.fromUser(user)
+    );
   }
 
   public async getUserByToken(token: string): Promise<User | undefined> {
@@ -67,6 +70,8 @@ export class AuthService implements OnModuleInit {
   public async getUserByPayload(
     tokenPayload: AuthTokenPayload,
   ): Promise<User | undefined> {
-    return await this.userService.findOneUserById(tokenPayload.id);
+    const user = await this.userService.findOneUserById(tokenPayload.id);
+
+    return user;
   }
 }

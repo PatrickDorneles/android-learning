@@ -33,6 +33,10 @@ export class User {
   valid: boolean;
 
   @JoinTable()
+  @ManyToMany(() => User, (user) => user.contacts)
+  contacts: User[]
+
+  @JoinTable()
   @OneToMany((type) => Message, (message) => message.user)
   messages: Message[];
 

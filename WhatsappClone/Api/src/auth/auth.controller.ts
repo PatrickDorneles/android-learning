@@ -30,12 +30,6 @@ export class AuthController {
     const userFound = await this.authService.getUserByToken(
       headers.authorization,
     );
-    return {
-      id: userFound.id,
-      name: userFound.name,
-      email: userFound.email,
-      phoneNumber: userFound.phoneNumber,
-      valid: userFound.valid,
-    };
+    return UserResponseModel.fromUser(userFound);
   }
 }

@@ -2,6 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_search"
+        android:title="Search"
+        android:contentDescription="User and Contact search"
+        app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/more"
+        android:title="Settings"
+        android:contentDescription="Open the app's settings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_sign_out"
+        android:title="Sign Out"
+        android:contentDescription="Sign out of the app"
+        app:showAsAction="never" />
 
 </menu>

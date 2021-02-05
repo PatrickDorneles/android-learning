@@ -7,6 +7,12 @@ import { UserRepository } from './user.repository';
 import { EmailAlreadyInUseError } from '@/@errors/email-already-in-use.error';
 
 import { hash } from 'bcrypt';
+import { NewContactInput } from './inputs/new-contact.input';
+import { AuthService } from '@/auth/auth.service';
+import { User } from './user.entity';
+import { ContactWasNotFoundError } from '@/@errors/contact-was-not-found.error';
+import { UserResponseModel } from './models/user-response.model';
+import { AlreadyAContactError } from '@/@errors/already-a-contact.error';
 
 const TOKEN_SIZE = 6;
 
@@ -16,6 +22,7 @@ export class UserService {
     private readonly userRepository: UserRepository,
     private readonly userFactory: UserFactory,
     private readonly tokenFactory: ValidationTokenFactory,
+    private readonly authService: AuthService
   ) {}
 
   public async registerByPhoneNumber(registerInput: UserRegisterByPhoneInput) {
@@ -53,6 +60,45 @@ export class UserService {
     return await this.userRepository.findOneByEmail(email);
   }
 
+  public async addToContact(newContactInput: NewContactInput, token: string) {
+    const user = await this.authService.getUserByToken(token);
+    let contact: User;
+
+    console.log(newContactInput);
+
+    if(newContactInput.email) {
+      contact = await this.findOneUserByEmail(newContactInput.email);
+    } else if(newContactInput.phoneNumber) {
+      contact = await this.userRepository.findOneByEmail(newContactInput.phoneNumber);
+    } else {
+      throw new ContactWasNotFoundError();
+    }
+
+    if(!contact || !contact.valid) {
+      throw new ContactWasNotFoundError();
+    }
+
+    if(
+      user.contacts.find(c => contact.id === c.id) &&
+      contact.contacts.find(u => user.id === u.id)
+    ) {
+      throw new AlreadyAContactError();
+    }
+
+    user.contacts.push(contact);
+    contact.contacts.push(user);
+
+    await this.userRepository.save(user);
+    await this.userRepository.save(contact);
+
+    return UserResponseModel.fromUser(user);
+  }
+
+  public async getUserContacts(token: string) {
+    const user = await this.authService.getUserByToken(token);
+    return user.contacts.map(contact => UserResponseModel.fromUser(contact));
+  }
+
   private async findUserByPhoneOrCreate(
     registerInput: UserRegisterByPhoneInput,
   ) {
@@ -67,4 +113,5 @@ export class UserService {
 
     return user;
   }
+
 }
