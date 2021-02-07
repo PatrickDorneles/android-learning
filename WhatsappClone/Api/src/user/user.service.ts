@@ -64,8 +64,6 @@ export class UserService {
     const user = await this.authService.getUserByToken(token);
     let contact: User;
 
-    console.log(newContactInput);
-
     if(newContactInput.email) {
       contact = await this.findOneUserByEmail(newContactInput.email);
     } else if(newContactInput.phoneNumber) {
@@ -74,24 +72,31 @@ export class UserService {
       throw new ContactWasNotFoundError();
     }
 
-    if(!contact || !contact.valid) {
+    if(!contact) {
       throw new ContactWasNotFoundError();
     }
 
+    console.log(user);
+    
+    
+    if(!user.contacts) {
+      user.contacts = [];
+    }
+
     if(
-      user.contacts.find(c => contact.id === c.id) &&
-      contact.contacts.find(u => user.id === u.id)
+      user.contacts.find(c => contact.id === c.id) 
     ) {
       throw new AlreadyAContactError();
     }
 
     user.contacts.push(contact);
-    contact.contacts.push(user);
 
-    await this.userRepository.save(user);
-    await this.userRepository.save(contact);
+    const savedUser = await this.userRepository.save(user);
 
-    return UserResponseModel.fromUser(user);
+    console.log(savedUser);
+    
+
+    return UserResponseModel.fromUser(contact);
   }
 
   public async getUserContacts(token: string) {

@@ -4,56 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activities.MainActivity">
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="WhatsApp"
+            app:menu="@menu/top_app_bar"
+            android:elevation="0dp"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            style="@style/Widget.MaterialComponents.TabLayout.Colored">
+
+
+        </com.google.android.material.tabs.TabLayout>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/view_pager_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            />
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/top_bar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:title="WhatsApp"
-                app:menu="@menu/top_app_bar"
-                android:elevation="0dp"
-                style="@style/Widget.MaterialComponents.Toolbar.Primary"
-                />
+    </LinearLayout>
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabMode="fixed"
-                app:tabGravity="fill"
-                style="@style/Widget.MaterialComponents.TabLayout.Colored">
-
-
-            </com.google.android.material.tabs.TabLayout>
-
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <LinearLayout
-            android:id="@+id/view_pager_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
-
-
-
-
-        </LinearLayout>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 </LinearLayout>

@@ -16,6 +16,7 @@ public class ValidationErrorBody {
 
     public static ValidationErrorBody fromResponse(Response<?> response) throws IOException {
         val errorBody = response.errorBody();
+        assert errorBody != null;
         return GsonHelper.fromGson(errorBody.string(), ValidationErrorBody.class);
     }
 

@@ -7,6 +7,7 @@ import {
   JoinTable,
   OneToMany,
   ManyToMany,
+  ManyToOne,
 } from 'typeorm';
 
 @Entity()
@@ -33,8 +34,8 @@ export class User {
   valid: boolean;
 
   @JoinTable()
-  @ManyToMany(() => User, (user) => user.contacts)
-  contacts: User[]
+  @ManyToMany(() => User)
+  contacts: User[];
 
   @JoinTable()
   @OneToMany((type) => Message, (message) => message.user)

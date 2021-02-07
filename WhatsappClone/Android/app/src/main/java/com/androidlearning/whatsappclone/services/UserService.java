@@ -5,8 +5,11 @@ import com.androidlearning.whatsappclone.inputs.UserRegisterByPhoneInput;
 import com.androidlearning.whatsappclone.inputs.UserSignUpByEmailInput;
 import com.androidlearning.whatsappclone.models.UserModel;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
@@ -21,5 +24,8 @@ public interface UserService {
 
     @POST("user/add/contact")
     Call<UserModel> addContact(@Body()AddContactInput addContactInput, @Header("Authorization") String token);
+
+    @GET("user/contacts")
+    Call<List<UserModel>> getContacts(@Header("Authorization") String token);
 
 }

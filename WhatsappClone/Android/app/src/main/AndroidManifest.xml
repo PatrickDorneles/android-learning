@@ -15,8 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/MainTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.SignUpActivity_"></activity>
-        <activity android:name=".activities.LoginActivity_"></activity>
+        <activity android:name=".activities.ChatActivity_" />
+        <activity android:name=".activities.SignUpActivity_" />
+        <activity android:name=".activities.LoginActivity_" />
         <activity android:name=".activities.EmailPassLoginActivity_">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
