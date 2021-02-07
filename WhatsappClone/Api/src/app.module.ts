@@ -4,9 +4,17 @@ import { ChatModule } from './chat/chat.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { MessageModule } from './message/message.module';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), UserModule, ChatModule, AuthModule, MessageModule],
+  imports: [
+    TypeOrmModule.forRoot(),
+    UserModule,
+    ChatModule,
+    AuthModule,
+    MessageModule,
+    SocketModule,
+  ],
   controllers: [],
   providers: [],
 })

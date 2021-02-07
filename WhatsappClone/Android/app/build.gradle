@@ -48,6 +48,7 @@ dependencies {
     annotationProcessor "org.androidannotations:androidannotations:4.8.0"
 
     implementation ('io.socket:socket.io-client:2.0.0') {
+        // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
 

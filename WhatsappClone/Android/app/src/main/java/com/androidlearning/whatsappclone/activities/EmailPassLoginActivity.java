@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.androidlearning.whatsappclone.R;
+import com.androidlearning.whatsappclone.config.AppConstants;
 import com.androidlearning.whatsappclone.factories.RetrofitServiceFactory;
 import com.androidlearning.whatsappclone.helpers.ErrorBody;
 import com.androidlearning.whatsappclone.helpers.preferences.AuthTokenPreferences;
@@ -53,6 +55,7 @@ public class EmailPassLoginActivity extends AppCompatActivity {
     private AuthTokenPreferences authTokenPreferences;
     private UserPreferences userPreferences;
 
+    @SneakyThrows
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

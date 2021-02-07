@@ -22,7 +22,7 @@ export class UserService {
     private readonly userRepository: UserRepository,
     private readonly userFactory: UserFactory,
     private readonly tokenFactory: ValidationTokenFactory,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
   ) {}
 
   public async registerByPhoneNumber(registerInput: UserRegisterByPhoneInput) {
@@ -52,11 +52,11 @@ export class UserService {
     return savedUser;
   }
 
-  public async findOneUserById(id: string) {
+  public async findUserById(id: string) {
     return await this.userRepository.findOneById(id);
   }
 
-  public async findOneUserByEmail(email: string) {
+  public async findUserByEmail(email: string) {
     return await this.userRepository.findOneByEmail(email);
   }
 
@@ -64,28 +64,27 @@ export class UserService {
     const user = await this.authService.getUserByToken(token);
     let contact: User;
 
-    if(newContactInput.email) {
-      contact = await this.findOneUserByEmail(newContactInput.email);
-    } else if(newContactInput.phoneNumber) {
-      contact = await this.userRepository.findOneByEmail(newContactInput.phoneNumber);
+    if (newContactInput.email) {
+      contact = await this.findUserByEmail(newContactInput.email);
+    } else if (newContactInput.phoneNumber) {
+      contact = await this.userRepository.findOneByEmail(
+        newContactInput.phoneNumber,
+      );
     } else {
       throw new ContactWasNotFoundError();
     }
 
-    if(!contact) {
+    if (!contact) {
       throw new ContactWasNotFoundError();
     }
 
     console.log(user);
-    
-    
-    if(!user.contacts) {
+
+    if (!user.contacts) {
       user.contacts = [];
     }
 
-    if(
-      user.contacts.find(c => contact.id === c.id) 
-    ) {
+    if (user.contacts.find((c) => contact.id === c.id)) {
       throw new AlreadyAContactError();
     }
 
@@ -94,14 +93,13 @@ export class UserService {
     const savedUser = await this.userRepository.save(user);
 
     console.log(savedUser);
-    
 
     return UserResponseModel.fromUser(contact);
   }
 
   public async getUserContacts(token: string) {
     const user = await this.authService.getUserByToken(token);
-    return user.contacts.map(contact => UserResponseModel.fromUser(contact));
+    return user.contacts.map((contact) => UserResponseModel.fromUser(contact));
   }
 
   private async findUserByPhoneOrCreate(
@@ -118,5 +116,4 @@ export class UserService {
 
     return user;
   }
-
 }

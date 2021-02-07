@@ -8,7 +8,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { JwtService, JwtSignOptions } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { JwtFactory } from './factories/jwt.factory';
 import { AuthWithEmailInput } from './inputs/auth-with-email.input';
@@ -20,8 +20,8 @@ export class AuthService implements OnModuleInit {
   private userService: UserService;
 
   constructor(
-    private readonly jwtService: JwtService,
     private readonly jwtFactory: JwtFactory,
+    private readonly jwtService: JwtService,
     private readonly userModuleRef: ModuleRef,
   ) {}
 
@@ -30,7 +30,7 @@ export class AuthService implements OnModuleInit {
   }
 
   async authUserWithEmail(authReq: AuthWithEmailInput) {
-    const user: User | undefined = await this.userService.findOneUserByEmail(
+    const user: User | undefined = await this.userService.findUserByEmail(
       authReq.email,
     );
 
@@ -49,10 +49,7 @@ export class AuthService implements OnModuleInit {
 
     const authToken = await this.jwtFactory.generateJwt(user);
 
-    return new AuthResponseModel(
-      authToken,
-      UserResponseModel.fromUser(user)
-    );
+    return new AuthResponseModel(authToken, UserResponseModel.fromUser(user));
   }
 
   public async getUserByToken(token: string): Promise<User | undefined> {
@@ -70,7 +67,7 @@ export class AuthService implements OnModuleInit {
   public async getUserByPayload(
     tokenPayload: AuthTokenPayload,
   ): Promise<User | undefined> {
-    const user = await this.userService.findOneUserById(tokenPayload.id);
+    const user = await this.userService.findUserById(tokenPayload.id);
 
     return user;
   }

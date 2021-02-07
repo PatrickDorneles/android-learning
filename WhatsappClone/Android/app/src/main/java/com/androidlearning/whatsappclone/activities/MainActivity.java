@@ -1,38 +1,42 @@
 package com.androidlearning.whatsappclone.activities;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.androidlearning.whatsappclone.R;
 import com.androidlearning.whatsappclone.adapters.SectionPagerAdapter;
+import com.androidlearning.whatsappclone.config.AppConstants;
 import com.androidlearning.whatsappclone.fragments.ChatsFragment;
 import com.androidlearning.whatsappclone.fragments.ContactsFragment;
+import com.androidlearning.whatsappclone.helpers.ESocket;
 import com.androidlearning.whatsappclone.helpers.preferences.AuthTokenPreferences;
 import com.androidlearning.whatsappclone.helpers.preferences.PhoneNumberPreferences;
 import com.androidlearning.whatsappclone.helpers.preferences.UserPreferences;
+
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collections;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+import io.socket.engineio.client.transports.WebSocket;
+import lombok.SneakyThrows;
 import lombok.val;
 
-@SuppressLint("NonConstantResourceId")
 @EActivity
 public class MainActivity extends AppCompatActivity {
 
@@ -49,27 +53,72 @@ public class MainActivity extends AppCompatActivity {
     private UserPreferences userPreferences;
     private PhoneNumberPreferences phoneNumberPreferences;
 
+    private Socket mSocket;
+
+    @SneakyThrows
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        authTokenPreferences = AuthTokenPreferences.builder()
-                .context(this)
-                .build();
         userPreferences = UserPreferences.builder()
                 .context(this)
                 .build();
         phoneNumberPreferences = PhoneNumberPreferences.builder()
                 .context(this)
                 .build();
+        authTokenPreferences = AuthTokenPreferences.builder()
+                .context(this)
+                .build();
 
         configureMenuOptions();
-        settingUpViewPager();
-
+        setUpViewPager();
+        setUpSocket();
     }
 
-    protected void settingUpViewPager() {
+    private Emitter.Listener onReceiveNewMessage = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            
+        }
+    };
+
+    private Emitter.Listener onReceiveNewChat = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+
+        }
+    };
+
+    protected void setUpSocket() throws URISyntaxException {
+
+        val token = authTokenPreferences.getToken();
+
+        URI uri = URI.create(AppConstants.LOCAL_SOCKET_URL);
+        IO.Options options = IO.Options.builder()
+                .setForceNew(true)
+                .setUpgrade(false)
+                .setTransports(new String[]{WebSocket.NAME})
+                .setPort(AppConstants.LOCAL_SOCKET_PORT)
+                .setExtraHeaders(
+                        Collections.singletonMap(
+                                "authorization",
+                                Collections.singletonList(token)
+                        )
+                )
+                .build();
+
+        mSocket = IO.socket(uri, options);
+
+        mSocket.on(ESocket.Events.NEW_MESSAGE.toString(), onReceiveNewMessage);
+        mSocket.on(ESocket.Events.NEW_CHAT.toString(), onReceiveNewChat);
+
+        mSocket.connect();
+
+        ESocket.setInstance(mSocket);
+    }
+
+    protected void setUpViewPager() {
         val viewPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new ChatsFragment(), "CHATS");
         viewPagerAdapter.addFragment(ContactsFragment.newInstance(this), "CONTACTS");
@@ -112,4 +161,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+    @Override
+    public void finish() {
+
+        mSocket.off();
+        mSocket.disconnect();
+
+        super.finish();
+    }
 }
