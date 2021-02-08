@@ -112,9 +112,6 @@ public class EmailPassLoginActivity extends AppCompatActivity {
             public void onResponse(Call<AuthResponseModel> call, Response<AuthResponseModel> response) {
                 clearErrors();
 
-                Log.i("code", String.valueOf(response.code()));
-                Log.i("isSuccessful", String.valueOf(response.isSuccessful()));
-
                 if(!response.isSuccessful()) {
                     val error = ErrorBody.fromResponse(response);
                     mEmailLayout.setError(" ");

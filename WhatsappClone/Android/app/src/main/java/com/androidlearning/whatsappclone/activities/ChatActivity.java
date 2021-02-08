@@ -151,7 +151,12 @@ public class ChatActivity extends AppCompatActivity {
         val titleName = StringUtils.capitalize(mContact.getName());
 
         mTopBar.setTitle(titleName);
-        mTopBar.setSubtitle(mContact.getEmail());
+        if(mContact.getEmail() != null) {
+            mTopBar.setSubtitle(mContact.getEmail());
+        } else if(mContact.getPhoneNumber() != null) {
+            mTopBar.setSubtitle(mContact.getPhoneNumber());
+        }
+
         mTopBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

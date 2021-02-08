@@ -1,10 +1,19 @@
 import { AuthUserHeaderModel } from '@/auth/model/auth-user-header.model';
-import { Body, Controller, Post, Headers, UseGuards, Get } from '@nestjs/common';
-import { NewContactInput } from './inputs/new-contact.input';
+import {
+  Body,
+  Controller,
+  Post,
+  Headers,
+  UseGuards,
+  Get,
+  Param,
+} from '@nestjs/common';
 import { UserRegisterByPhoneInput } from './inputs/user-register.input';
 import { UserSignUpByEmailInput } from './inputs/user-sign-up-email.input';
 import { UserService } from './user.service';
-import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
+import { JwtAuthGuard } from '@/auth/jwt-auth.guard';
+import { UserResponseModel } from './models/user-response.model';
+import { ValidatorInput } from './inputs/validator.input';
 
 @Controller('user')
 export class UserController {
@@ -14,7 +23,16 @@ export class UserController {
   protected async registerUserByPhone(
     @Body() registerInput: UserRegisterByPhoneInput,
   ) {
-    return await this.userService.registerByPhoneNumber(registerInput);
+    const user = await this.userService.registerByPhoneNumber(registerInput);
+    return UserResponseModel.fromUser(user);
+  }
+
+  @Post('/sign-up/validate/:id')
+  protected async validateUser(
+    @Param('id') id: string,
+    @Body() input: ValidatorInput,
+  ) {
+    return await this.userService.validateUserPhoneNumber(id, input);
   }
 
   @Post('/sign-up/email')
@@ -27,10 +45,13 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Post('add/contact')
   protected async addContact(
-    @Body() newContactInput: NewContactInput,
+    @Body() emailOrPhoneNumber: string,
     @Headers() headers: AuthUserHeaderModel,
   ) {
-    return await this.userService.addToContact(newContactInput, headers.authorization);
+    return await this.userService.addToContact(
+      emailOrPhoneNumber,
+      headers.authorization,
+    );
   }
 
   @UseGuards(JwtAuthGuard)

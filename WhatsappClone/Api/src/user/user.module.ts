@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { HttpModule, Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserFactory } from './factories/user.factory';
@@ -13,6 +13,7 @@ import { AuthModule } from '@/auth/auth.module';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     TypeOrmModule.forFeature([UserRepository]),
     AuthModule,
+    HttpModule,
   ],
   controllers: [UserController],
   providers: [UserService, UserFactory, ValidationTokenFactory],

@@ -52,6 +52,14 @@ export class AuthService implements OnModuleInit {
     return new AuthResponseModel(authToken, UserResponseModel.fromUser(user));
   }
 
+  public async authUserWithPhoneNumber(userId: string) {
+    const user: User = await this.userService.findUserById(userId);
+
+    const authToken = await this.jwtFactory.generateJwt(user);
+
+    return new AuthResponseModel(authToken, UserResponseModel.fromUser(user));
+  }
+
   public async findUserByToken(token: string): Promise<User | undefined> {
     const jwtToken: string = token.replace('Bearer ', '');
     try {

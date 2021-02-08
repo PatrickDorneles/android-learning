@@ -15,6 +15,7 @@ export class UserFactory {
     user.id = id;
     user.name = value.name;
     user.phoneNumber = value.phoneNumber;
+    user.valid = false;
 
     return user;
   }

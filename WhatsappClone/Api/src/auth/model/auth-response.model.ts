@@ -1,10 +1,5 @@
-import { UserResponseModel } from "@/user/models/user-response.model";
+import { UserResponseModel } from '@/user/models/user-response.model';
 
 export class AuthResponseModel {
-
-    constructor(
-        public authToken: string,
-        public user: UserResponseModel 
-    ) {}
-
+  constructor(public authToken: string, public user: UserResponseModel) {}
 }

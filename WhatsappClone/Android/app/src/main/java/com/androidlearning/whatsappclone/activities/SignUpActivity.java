@@ -1,4 +1,4 @@
-package com.androidlearning.whatsappclone.activities;
+    package com.androidlearning.whatsappclone.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

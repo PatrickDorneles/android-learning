@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         val rawPhoneNumber = phoneNumber.replaceAll( "[^\\d]", "");
 
         val fullPhoneNumber =
-                "+" + mCountryCodeEdit.getText().toString()
+                mCountryCodeEdit.getText().toString()
                 + rawPhoneNumber;
 
         val registerInput = UserRegisterByPhoneInput.builder()
@@ -80,12 +80,16 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<UserModel>() {
             @Override
             public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                Log.i("here", "here");
                 if(response.isSuccessful()) {
                     val user = response.body();
                     val userJson = GsonHelper.GSON.toJson(user);
 
+                    Log.i("user", userJson);
+
                     val intent = new Intent(LoginActivity.this, ValidationActivity_.class);
                     intent.putExtra(ValidationActivity.USER_KEY_EXTRA, userJson);
+                    intent.putExtra(ValidationActivity.PHONE_KEY_EXTRA, fullPhoneNumber);
                     startActivity(intent);
                     finish();
 
@@ -93,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 Log.i("res", response.toString());
-                Toast.makeText(LoginActivity.this, "Problema ao enviar SMS, tente novamente mais tarde", Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "SMS sending failed, try again later", Toast.LENGTH_LONG).show();
 
             }
 

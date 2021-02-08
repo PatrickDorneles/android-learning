@@ -133,7 +133,7 @@ public class ContactListFragment extends Fragment {
 
         val dialog = dialogBuilder
                 .setTitle("New Contact")
-                .setMessage("Insert user's email")
+                .setMessage("Insert user's email or phone number")
                 .setCancelable(false)
                 .setView(editText)
                 .setPositiveButton("ADD", null)
@@ -149,20 +149,17 @@ public class ContactListFragment extends Fragment {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                val email = editText.getText().toString();
-                addContact(email, dialog);
+                val emailOrPassword = editText.getText().toString();
+                addContact(emailOrPassword, dialog);
             }
         });
     }
 
-    protected void addContact(String email, AlertDialog dialog) {
+    protected void addContact(String emailOrPassword, AlertDialog dialog) {
         val token = authTokenPreferences.getToken();
 
-        val input = AddContactInput.builder()
-                .email(email)
-                .build();
 
-        val call = userService.addContact(input, token);
+        val call = userService.addContact(emailOrPassword, token);
 
         call.enqueue(new Callback<UserModel>() {
             @SneakyThrows

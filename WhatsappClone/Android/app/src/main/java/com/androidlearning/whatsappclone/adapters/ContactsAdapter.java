@@ -1,8 +1,6 @@
 package com.androidlearning.whatsappclone.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidlearning.whatsappclone.R;
-import com.androidlearning.whatsappclone.activities.ChatActivity_;
 import com.androidlearning.whatsappclone.models.UserModel;
 import com.androidlearning.whatsappclone.utils.StringUtils;
 
@@ -45,16 +41,18 @@ public class ContactsAdapter extends ArrayAdapter<UserModel> {
         }
 
         TextView nameView = (TextView) convertView.findViewById(R.id.contact_name);
-        TextView emailView = (TextView) convertView.findViewById(R.id.contact_email);
+        TextView identifierView = (TextView) convertView.findViewById(R.id.contact_identifier);
 
         val nameLabel = StringUtils.capitalize(contact.getName());
 
         nameView.setText(nameLabel);
 
         if(contact.getEmail() != null) {
-            emailView.setText(contact.getEmail());
+            identifierView.setText(contact.getEmail());
+        } else if(contact.getPhoneNumber() != null)  {
+            identifierView.setText(contact.getPhoneNumber());
         } else {
-            emailView.setVisibility(View.GONE);
+            identifierView.setVisibility(View.GONE);
         }
 
         return convertView;

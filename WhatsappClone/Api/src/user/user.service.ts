@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpService, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserFactory } from './factories/user.factory';
 import { ValidationTokenFactory } from './factories/validation-token.factory';
 import { UserRegisterByPhoneInput } from './inputs/user-register.input';
@@ -7,12 +7,14 @@ import { UserRepository } from './user.repository';
 import { EmailAlreadyInUseError } from '@/@errors/email-already-in-use.error';
 
 import { hash } from 'bcrypt';
-import { NewContactInput } from './inputs/new-contact.input';
 import { AuthService } from '@/auth/auth.service';
 import { User } from './user.entity';
 import { ContactWasNotFoundError } from '@/@errors/contact-was-not-found.error';
 import { UserResponseModel } from './models/user-response.model';
 import { AlreadyAContactError } from '@/@errors/already-a-contact.error';
+import { ValidatorInput } from './inputs/validator.input';
+import { isEmail } from 'class-validator';
+import { AppConstants } from '@/@config/constants';
 
 const TOKEN_SIZE = 6;
 
@@ -23,16 +25,51 @@ export class UserService {
     private readonly userFactory: UserFactory,
     private readonly tokenFactory: ValidationTokenFactory,
     private readonly authService: AuthService,
+    private readonly httpService: HttpService,
   ) {}
 
   public async registerByPhoneNumber(registerInput: UserRegisterByPhoneInput) {
     const user = await this.findUserByPhoneOrCreate(registerInput);
     const token = this.tokenFactory.createToken(TOKEN_SIZE);
 
+    user.name = registerInput.name;
     user.validationToken = token;
     user.valid = false;
 
-    await this.userRepository.update(user.id, user);
+    await this.userRepository.save(user);
+
+    const message = `Whatsapp Clone: seu codigo de verificação é ${token}`;
+
+    console.log(message);
+
+    // this.httpService.post(
+    //   `${AppConstants.SMS_API}/send?key=${
+    //     AppConstants.SMS_API_KEY
+    //   }&type=9&number=${user.phoneNumber.replace(
+    //     '55',
+    //     '',
+    //   )}&msg=${encodeURIComponent(message)}`,
+    // );
+
+    return user;
+  }
+
+  public async validateUserPhoneNumber(
+    userId: string,
+    validator: ValidatorInput,
+  ) {
+    const user = await this.findUserById(userId);
+
+    if (validator.validationToken !== user.validationToken) {
+      throw new UnauthorizedException('Invalid validation token');
+    }
+
+    user.valid = true;
+    user.validationToken = '';
+
+    await this.userRepository.save(user);
+
+    return await this.authService.authUserWithPhoneNumber(userId);
   }
 
   public async signUpByEmail(signUpInput: UserSignUpByEmailInput) {
@@ -60,26 +97,18 @@ export class UserService {
     return await this.userRepository.findOneByEmail(email);
   }
 
-  public async addToContact(newContactInput: NewContactInput, token: string) {
+  public async addToContact(emailOrPhoneNumber: string, token: string) {
     const user = await this.authService.findUserByToken(token);
     let contact: User;
 
-    if (newContactInput.email) {
-      contact = await this.findUserByEmail(newContactInput.email);
-    } else if (newContactInput.phoneNumber) {
-      contact = await this.userRepository.findOneByEmail(
-        newContactInput.phoneNumber,
-      );
+    if (isEmail(emailOrPhoneNumber)) {
+      contact = await this.findUserByEmail(emailOrPhoneNumber);
     } else {
-      throw new ContactWasNotFoundError();
+      contact = await this.userRepository.findOneByPhone(emailOrPhoneNumber);
     }
 
     if (!contact) {
       throw new ContactWasNotFoundError();
-    }
-
-    if (!user.contacts) {
-      user.contacts = [];
     }
 
     if (user.contacts.find((c) => contact.id === c.id)) {
@@ -107,7 +136,7 @@ export class UserService {
 
     if (!user) {
       const userToRegister = this.userFactory.createUserByPhone(registerInput);
-      return this.userRepository.create(userToRegister);
+      return await this.userRepository.save(userToRegister);
     }
 
     return user;
