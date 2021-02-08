@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.ChatActivity"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="@drawable/bg">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -29,6 +30,8 @@
         android:id="@+id/chat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:divider="@color/transparent"
+        android:stackFromBottom="true"
         android:layout_weight="1"/>
 
     <LinearLayout
@@ -39,13 +42,16 @@
         android:paddingTop="12dp"
         android:paddingBottom="16dp"
         android:weightSum="1"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:background="@android:color/white"
+        android:elevation="4dp">
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Message"
+            app:boxStrokeWidth="3dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText

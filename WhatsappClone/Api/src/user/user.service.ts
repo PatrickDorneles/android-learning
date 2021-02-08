@@ -61,7 +61,7 @@ export class UserService {
   }
 
   public async addToContact(newContactInput: NewContactInput, token: string) {
-    const user = await this.authService.getUserByToken(token);
+    const user = await this.authService.findUserByToken(token);
     let contact: User;
 
     if (newContactInput.email) {
@@ -78,8 +78,6 @@ export class UserService {
       throw new ContactWasNotFoundError();
     }
 
-    console.log(user);
-
     if (!user.contacts) {
       user.contacts = [];
     }
@@ -90,15 +88,13 @@ export class UserService {
 
     user.contacts.push(contact);
 
-    const savedUser = await this.userRepository.save(user);
-
-    console.log(savedUser);
+    await this.userRepository.save(user);
 
     return UserResponseModel.fromUser(contact);
   }
 
   public async getUserContacts(token: string) {
-    const user = await this.authService.getUserByToken(token);
+    const user = await this.authService.findUserByToken(token);
     return user.contacts.map((contact) => UserResponseModel.fromUser(contact));
   }
 

@@ -27,6 +27,7 @@ export class UserFactory {
     user.name = value.name;
     user.email = value.email;
     user.password = value.password;
+    user.valid = true;
 
     return user;
   }

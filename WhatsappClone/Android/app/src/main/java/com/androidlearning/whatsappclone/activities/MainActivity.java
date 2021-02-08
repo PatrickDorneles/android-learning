@@ -13,8 +13,8 @@ import android.widget.Toast;
 import com.androidlearning.whatsappclone.R;
 import com.androidlearning.whatsappclone.adapters.SectionPagerAdapter;
 import com.androidlearning.whatsappclone.config.AppConstants;
-import com.androidlearning.whatsappclone.fragments.ChatsFragment;
-import com.androidlearning.whatsappclone.fragments.ContactsFragment;
+import com.androidlearning.whatsappclone.fragments.ChatListFragment;
+import com.androidlearning.whatsappclone.fragments.ContactListFragment;
 import com.androidlearning.whatsappclone.helpers.ESocket;
 import com.androidlearning.whatsappclone.helpers.preferences.AuthTokenPreferences;
 import com.androidlearning.whatsappclone.helpers.preferences.PhoneNumberPreferences;
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     private Emitter.Listener onReceiveNewMessage = new Emitter.Listener() {
         @Override
         public void call(Object... args) {
-            
+
         }
     };
 
@@ -120,11 +120,10 @@ public class MainActivity extends AppCompatActivity {
 
     protected void setUpViewPager() {
         val viewPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragment(new ChatsFragment(), "CHATS");
-        viewPagerAdapter.addFragment(ContactsFragment.newInstance(this), "CONTACTS");
+        viewPagerAdapter.addFragment(ChatListFragment.newInstance(this), "CHATS");
+        viewPagerAdapter.addFragment(ContactListFragment.newInstance(this), "CONTACTS");
 
         mViewPager.setAdapter(viewPagerAdapter);
-
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
@@ -161,13 +160,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
-    public void finish() {
+    protected void onDestroy() {
 
         mSocket.off();
         mSocket.disconnect();
 
-        super.finish();
+        super.onDestroy();
     }
 }

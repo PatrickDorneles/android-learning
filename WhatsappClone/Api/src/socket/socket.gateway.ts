@@ -17,7 +17,7 @@ import {
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 import { MessageRequestInput } from './inputs/message-request.input';
-import { ChatResponseModel } from './models/chat-response.model';
+import { ChatResponseModel } from '../chat/models/chat-response.model';
 import { ConnectedUserModel } from './models/connected-user.model';
 
 export enum Events {
@@ -33,7 +33,7 @@ export enum Emits {
 
 function getRoomName(id: string) {
   const CHAT_ROOM_PREFIX = 'chat';
-  return `${CHAT_ROOM_PREFIX}: ${id}`;
+  return `${CHAT_ROOM_PREFIX}:${id}`;
 }
 
 @WebSocketGateway(80, {
@@ -57,7 +57,7 @@ export class SocketGateway
     const token = socket.request.headers.authorization;
 
     try {
-      const user: User = await this.authService.getUserByToken(token);
+      const user: User = await this.authService.findUserByToken(token);
       const connectedUser = new ConnectedUserModel(user.id, socket);
       this.connectedUsers.push(connectedUser);
 
@@ -82,11 +82,12 @@ export class SocketGateway
   }
 
   @SubscribeMessage(Events.MESSAGE)
-  public async privateMessage(
-    client: Socket,
-    messageRequest: MessageRequestInput,
-  ) {
-    const user: User = await this.authService.getUserByToken(
+  public async privateMessage(client: Socket, unparsedMessageRequest: string) {
+    const messageRequest = <MessageRequestInput>(
+      JSON.parse(unparsedMessageRequest)
+    );
+
+    const user: User = await this.authService.findUserByToken(
       messageRequest.token,
     );
 
@@ -148,9 +149,8 @@ export class SocketGateway
         contactUserConnected.socket.join(getRoomName(chatId));
       }
     } else {
-      this.server
-        .to(getRoomName(chatId))
-        .emit(Emits.NEW_MESSAGE, messageResponse);
+      contactUserConnected?.socket.emit(Emits.NEW_MESSAGE, messageResponse);
+      client.emit(Emits.NEW_MESSAGE, messageResponse);
     }
   }
 }

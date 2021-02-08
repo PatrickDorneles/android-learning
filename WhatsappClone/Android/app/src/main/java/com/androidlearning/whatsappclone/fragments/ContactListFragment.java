@@ -8,7 +8,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,7 +45,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 @NoArgsConstructor
-public class ContactsFragment extends Fragment {
+public class ContactListFragment extends Fragment {
 
 
     protected FloatingActionButton mAddContactButton;
@@ -60,8 +59,8 @@ public class ContactsFragment extends Fragment {
     private UserPreferences userPreferences;
     private UserService userService;
 
-    public static ContactsFragment newInstance(@NonNull Context context) {
-        ContactsFragment fragment = new ContactsFragment();
+    public static ContactListFragment newInstance(@NonNull Context context) {
+        ContactListFragment fragment = new ContactListFragment();
         fragment.activityContext = context;
         Bundle args = new Bundle();
         fragment.setArguments(args);

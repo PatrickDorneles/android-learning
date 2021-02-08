@@ -27,7 +27,7 @@ export class AuthController {
   async getAthenticatedUser(
     @Headers() headers: AuthUserHeaderModel,
   ): Promise<UserResponseModel> {
-    const userFound = await this.authService.getUserByToken(
+    const userFound = await this.authService.findUserByToken(
       headers.authorization,
     );
     return UserResponseModel.fromUser(userFound);

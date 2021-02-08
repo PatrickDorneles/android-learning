@@ -52,19 +52,19 @@ export class AuthService implements OnModuleInit {
     return new AuthResponseModel(authToken, UserResponseModel.fromUser(user));
   }
 
-  public async getUserByToken(token: string): Promise<User | undefined> {
+  public async findUserByToken(token: string): Promise<User | undefined> {
     const jwtToken: string = token.replace('Bearer ', '');
     try {
       const userTokenPayload: AuthTokenPayload = this.jwtService.verify<AuthTokenPayload>(
         jwtToken,
       );
-      return await this.getUserByPayload(userTokenPayload);
+      return await this.findUserByPayload(userTokenPayload);
     } catch (error) {
       throw new UnauthorizedException('Token Invalido');
     }
   }
 
-  public async getUserByPayload(
+  public async findUserByPayload(
     tokenPayload: AuthTokenPayload,
   ): Promise<User | undefined> {
     const user = await this.userService.findUserById(tokenPayload.id);

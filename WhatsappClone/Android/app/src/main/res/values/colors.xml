@@ -8,4 +8,6 @@
     <color name="onSurface">#212121</color>
     <color name="onSurfaceLighter">#9E9E9E</color>
 
+    <color name="transparent">#00000000</color>
+
 </resources>
